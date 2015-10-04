@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf8"/>
+    <title>Slayer</title>
+    <style>
+    canvas {
+        border: 1px solid #AAA;
+    }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+    <script type="text/javascript" src="dist/slayer.js"></script>
+    <script type="text/javascript">
+    var g = new Game(document.getElementById('canvas'));
+    g.run();
+    </script>
+</body>
+</html>
