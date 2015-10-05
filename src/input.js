@@ -11,7 +11,6 @@ Input.prototype = {
         window.addEventListener('keyup', this.onKeyUp.bind(this));
     },
     onKeyDown: function(e) {
-        console.log(e);
         if (this.downkeys[e.keyCode]) return;
         this.downkeys[e.keyCode] = 1;
         for (var i in this.downevents) {

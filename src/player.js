@@ -3,6 +3,7 @@ var Player = function(x, y, context, input) {
     this.y = y;
     this.w = 20;
     this.h = 20;
+    this.baseSpeed = 100;
     this.speed = {x: 0, y: 0};
     this.context = context;
     this.init(input);
@@ -15,40 +16,40 @@ Player.prototype = {
     },
     render: function() {
         this.context.fillStyle = '#000000';
-        this.context.fillRect(this.x, this.y, this.w, this.h);
+        this.context.fillRect(this.x | 0, this.y | 0, this.w, this.h);
     },
-    update: function() {
-        this.x += this.speed.x;
-        this.y += this.speed.y;
+    update: function(elapsedTime) {
+        this.x += this.speed.x * elapsedTime;
+        this.y += this.speed.y * elapsedTime;
     },
 
     onKeyDown: function(keyCode) {
         console.log(keyCode);
         if (keyCode == 37) {
-            this.speed.x -= 5;
+            this.speed.x -= this.baseSpeed;
         }
         if (keyCode == 38) {
-            this.speed.y -= 5;
+            this.speed.y -= this.baseSpeed;
         }
         if (keyCode == 39) {
-            this.speed.x += 5;
+            this.speed.x += this.baseSpeed;
         }
         if (keyCode == 40) {
-            this.speed.y += 5;
+            this.speed.y += this.baseSpeed;
         }
     },
     onKeyUp: function(keyCode) {
         if (keyCode == 37) {
-            this.speed.x += 5;
+            this.speed.x += this.baseSpeed;
         }
         if (keyCode == 38) {
-            this.speed.y += 5;
+            this.speed.y += this.baseSpeed;
         }
         if (keyCode == 39) {
-            this.speed.x -= 5;
+            this.speed.x -= this.baseSpeed;
         }
         if (keyCode == 40) {
-            this.speed.y -= 5;
+            this.speed.y -= this.baseSpeed;
         }
     }
 };

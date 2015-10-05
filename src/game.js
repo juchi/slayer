@@ -5,6 +5,7 @@ var Game = function(canvas) {
 
     this.input = new Input(canvas);
     this.player = new Player(0, 0, canvas.getContext('2d'), this.input);
+    this.oldTime = 0;
 };
 
 Game.prototype = {
@@ -14,12 +15,15 @@ Game.prototype = {
 
     frame: function() {
         requestAnimationFrame(this.frame.bind(this));
-        this.update();
+        var newTime = performance.now()
+        var elapsedTime = (newTime - this.oldTime) / 1000;
+        this.oldTime = newTime;
+        this.update(elapsedTime);
         this.render();
     },
 
-    update: function() {
-        this.player.update();
+    update: function(elapsedTime) {
+        this.player.update(elapsedTime);
     },
 
     render: function() {
