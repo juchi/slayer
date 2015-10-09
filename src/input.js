@@ -1,27 +1,26 @@
-var Input = function(canvas) {
-    this.downkeys = {};
-    this.downevents = [];
-    this.upevents = [];
-    this.init();
-};
-
-Input.prototype = {
-    init: function() {
+class Input {
+    constructor(canvas) {
+        this.downkeys = {};
+        this.downevents = [];
+        this.upevents = [];
+        this.init();
+    }
+    init() {
         window.addEventListener('keydown', this.onKeyDown.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
-    },
-    onKeyDown: function(e) {
+    }
+    onKeyDown(e) {
         if (this.downkeys[e.keyCode]) return;
         this.downkeys[e.keyCode] = 1;
         for (var i in this.downevents) {
             this.downevents[i](e.keyCode);
         }
-    },
-    onKeyUp: function(e) {
+    }
+    onKeyUp(e) {
         if (!this.downkeys[e.keyCode]) return;
         delete this.downkeys[e.keyCode];
         for (var i in this.upevents) {
             this.upevents[i](e.keyCode);
         }
     }
-};
+}

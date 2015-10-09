@@ -6,9 +6,18 @@ module.exports = function(grunt) {
                 src: ['src/**/*.js'],
                 dest: 'dist/slayer.js'
             }
+        },
+        babel: {
+            options: {},
+            dist: {
+                files: {
+                    'dist/slayer.js': 'dist/slayer.js'
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.registerTask('default', ['concat']);
+    grunt.loadNpmTasks('grunt-babel');
+    grunt.registerTask('default', ['concat', 'babel']);
 };
