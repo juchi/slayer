@@ -8,6 +8,6 @@ class Enemy extends Movable {
     }
     render() {
         this.context.fillStyle = '#FF0000';
-        this.context.fillRect(this.x | 0, this.y | 0, this.w, this.h);
+        this.context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
     }
 }

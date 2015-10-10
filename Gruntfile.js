@@ -3,7 +3,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         concat: {
             dist: {
-                src: ['src/movable.js', 'src/enemy.js', 'src/player.js', 'src/input.js', 'src/game.js'],
+                src: ['src/geometry.js', 'src/movable.js', 'src/enemy.js', 'src/player.js', 'src/input.js', 'src/game.js'],
                 dest: 'dist/slayer.js'
             }
         },

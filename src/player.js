@@ -10,10 +10,11 @@ class Player extends Movable {
     init(input) {
         input.downevents.push(this.onKeyDown.bind(this));
         input.upevents.push(this.onKeyUp.bind(this));
+        input.clickevents.push(this.onClick.bind(this));
     }
     render() {
         this.context.fillStyle = '#000000';
-        this.context.fillRect(this.x | 0, this.y | 0, this.w, this.h);
+        this.context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
     }
     onKeyDown(keyCode) {
         if (keyCode == 37) {
@@ -41,6 +42,11 @@ class Player extends Movable {
         }
         if (keyCode == 40) {
             this.speed.y -= this.baseSpeed;
+        }
+    }
+    onClick(e) {
+        if (e.button == 0) {
+            this.destination = {x: e.offsetX, y: e.offsetY};
         }
     }
 }
