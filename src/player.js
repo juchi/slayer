@@ -6,6 +6,7 @@ class Player extends Movable {
         this.baseSpeed = 100;
         this.context = context;
         this.init(input);
+        this.currentWeapon = new Weapon();
     }
     init(input) {
         input.downevents.push(this.onKeyDown.bind(this));
@@ -45,8 +46,13 @@ class Player extends Movable {
         }
     }
     onClick(e) {
-        if (e.button == 0) {
+        if (e.button == 0) { // left click
             this.destination = {x: e.offsetX, y: e.offsetY};
+        } else if (e.button == 2) { // right click
+            this.attack({x: e.offsetX, y: e.offsetY});
         }
+    }
+    attack(targetPosition) {
+        this.currentWeapon.fire();
     }
 }

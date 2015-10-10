@@ -10,6 +10,7 @@ class Input {
         window.addEventListener('keydown', this.onKeyDown.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
         canvas.addEventListener('mousedown', this.onMouseDown.bind(this));
+        canvas.addEventListener('contextmenu', function(e) {e.preventDefault();});
     }
     onKeyDown(e) {
         if (this.downkeys[e.keyCode]) return;
