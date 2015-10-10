@@ -1,9 +1,12 @@
 module.exports = function(grunt) {
+    require('load-grunt-tasks')(grunt);
+
+    var config = grunt.file.readJSON('config.json');
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         concat: {
             dist: {
-                src: ['src/geometry.js', 'src/weapon.js', 'src/movable.js', 'src/enemy.js', 'src/player.js', 'src/input.js', 'src/game.js'],
+                src: config.files,
                 dest: 'dist/slayer.js'
             }
         },
@@ -17,7 +20,5 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-babel');
     grunt.registerTask('default', ['concat', 'babel']);
 };

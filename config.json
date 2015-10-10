@@ -1,0 +1,11 @@
+{
+    "files": [
+        "src/geometry.js",
+        "src/weapon.js",
+        "src/movable.js",
+        "src/enemy.js",
+        "src/player.js",
+        "src/input.js",
+        "src/game.js"
+    ]
+}

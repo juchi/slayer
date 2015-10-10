@@ -1,20 +1,21 @@
 {
-    "name": "slayer",
-    "author": "Julien Chichignoud",
-    "description": "Slayer game",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/juchi/slayer"
-    },
-    "homepage": "http://juchi.github.io/slayer/",
-    "license": "MIT",
-    "devDependencies": {
-        "grunt": "~0.4.5",
-        "grunt-cli": "~0.1.13",
-        "grunt-contrib-concat": "~0.5.1",
-        "grunt-babel": "~5.0.0"
-    },
-    "scripts": {
-        "grunt": "./node_modules/.bin/grunt"
-    }
+  "name": "slayer",
+  "author": "Julien Chichignoud",
+  "description": "Slayer game",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juchi/slayer"
+  },
+  "homepage": "http://juchi.github.io/slayer/",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-babel": "~5.0.0",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-concat": "~0.5.1",
+    "load-grunt-tasks": "^3.3.0"
+  },
+  "scripts": {
+    "grunt": "./node_modules/.bin/grunt"
+  }
 }
