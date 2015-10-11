@@ -7,6 +7,9 @@ class Geometry {
     }
     static normalize(vector) {
         var length = Geometry.getDistance({x: 0, y: 0}, vector);
+        if (length == 0) {
+            return {x: 0, y: 0};
+        }
 
         return {x: vector.x / length, y: vector.y / length};
     }
