@@ -6,6 +6,21 @@ class Movable {
         this.speed = {x: 0, y: 0};
         this.destination = null;
     }
+    setPosition(position) {
+        this.position.x = position.x;
+        this.position.y = position.y;
+    }
+    setDestination(destination) {
+        if (!destination) {
+            this.destination = null;
+            return;
+        }
+        if (!this.destination) {
+            this.destination = {x: 0, y: 0};
+        }
+        this.destination.x = destination.x;
+        this.destination.y = destination.y;
+    }
     update(elapsedTime) {
         if (this.destination) {
             this.speed = Geometry.normalize(Geometry.getVector(this.position, this.destination));
@@ -20,6 +35,10 @@ class Movable {
             this.position.y = this.destination.y;
             this.destination = null;
             this.speed = {x: 0,  y: 0};
+            this.onDestination();
         }
+    }
+    onDestination() {
+
     }
 }

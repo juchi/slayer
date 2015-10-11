@@ -1,21 +1,20 @@
 class Player extends Movable {
-    constructor(x, y, context, input) {
+    constructor(x, y, input) {
         super(x, y);
         this.w = 20;
         this.h = 20;
         this.baseSpeed = 100;
-        this.context = context;
         this.init(input);
-        this.currentWeapon = new Weapon();
+        this.currentWeapon = null;
     }
     init(input) {
         input.downevents.push(this.onKeyDown.bind(this));
         input.upevents.push(this.onKeyUp.bind(this));
         input.clickevents.push(this.onClick.bind(this));
     }
-    render() {
-        this.context.fillStyle = '#000000';
-        this.context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
+    render(context) {
+        context.fillStyle = '#000000';
+        context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
     }
     onKeyDown(keyCode) {
         if (keyCode == 37) {
@@ -53,6 +52,6 @@ class Player extends Movable {
         }
     }
     attack(targetPosition) {
-        this.currentWeapon.fire();
+        this.currentWeapon.fire(this.position, targetPosition);
     }
 }

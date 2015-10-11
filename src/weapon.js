@@ -1,6 +1,7 @@
 class Weapon {
-    constructor() {
+    constructor(projectiles) {
         this.damages = 0;
+        this.projectiles = projectiles;
     }
     fire() {
         console.log('fire');

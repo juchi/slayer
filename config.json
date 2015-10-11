@@ -2,7 +2,10 @@
     "files": [
         "src/geometry.js",
         "src/weapon.js",
+        "src/bow.js",
         "src/movable.js",
+        "src/projectile.js",
+        "src/arrow.js",
         "src/enemy.js",
         "src/player.js",
         "src/input.js",
