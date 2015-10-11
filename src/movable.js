@@ -23,9 +23,16 @@ class Movable {
     }
     update(elapsedTime) {
         if (this.destination) {
-            this.speed = Geometry.normalize(Geometry.getVector(this.position, this.destination));
-            this.speed.x *= this.baseSpeed;
-            this.speed.y *= this.baseSpeed;
+            var movement = Geometry.getVector(this.position, this.destination);
+            var distance = Geometry.getLength(movement);
+            this.speed = Geometry.normalize(movement);
+            // do not go farther than the destination point
+            var coef = this.baseSpeed;
+            if (this.baseSpeed * elapsedTime > distance) {
+                coef = distance / elapsedTime;
+            }
+            this.speed.x *= coef;
+            this.speed.y *= coef;
         }
         this.position.x += this.speed.x * elapsedTime;
         this.position.y += this.speed.y * elapsedTime;
