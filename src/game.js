@@ -5,7 +5,7 @@ class Game {
         this.canvas.height = 480;
 
         this.input = new Input(canvas);
-        this.projectiles = [];
+        this.projectiles = new Pool();
         this.player = new Player(0, 0, this.input);
         this.player.currentWeapon = new Bow(this.projectiles);
         this.enemies = [];
@@ -29,7 +29,9 @@ class Game {
             this.enemies[i].update(elapsedTime);
         }
         for (var i = 0; i < this.projectiles.length; i++) {
-            this.projectiles[i].update(elapsedTime);
+            if (this.projectiles.get(i).alive) {
+                this.projectiles.get(i).update(elapsedTime);
+            }
         }
     }
     render() {
@@ -40,7 +42,9 @@ class Game {
             this.enemies[i].render(context);
         }
         for (var i = 0; i < this.projectiles.length; i++) {
-            this.projectiles[i].render(context);
+            if (this.projectiles.get(i).alive) {
+                this.projectiles.get(i).render(context);
+            }
         }
     }
 }

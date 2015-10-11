@@ -1,5 +1,6 @@
 {
     "files": [
+        "src/pool.js",
         "src/geometry.js",
         "src/weapon.js",
         "src/bow.js",

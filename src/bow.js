@@ -4,9 +4,13 @@ class Bow extends Weapon {
         this.damages = 10;
     }
     fire(startPosition, targetPosition) {
-        var arrow = new Arrow();
+        var arrow = this.projectiles.getFree();
+        if (!arrow) {
+            arrow = new Arrow();
+            this.projectiles.push(arrow);
+        }
+        arrow.alive = true;
         arrow.setPosition(startPosition);
         arrow.setDestination(targetPosition);
-        this.projectiles.push(arrow);
     }
 }
