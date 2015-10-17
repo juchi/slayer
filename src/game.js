@@ -7,13 +7,13 @@ class Game {
         this.input = new Input(canvas);
         this.projectiles = new Pool();
         this.player = new Player(0, 0, this.input);
-        this.player.currentWeapon = new Bow(this.projectiles, this);
-        this.enemies = [];
-        this.enemies.push(new Enemy(200, 200, this));
+        this.enemies = new Pool();
         this.oldTime = null;
         this.score = 0;
     }
     run() {
+        this.player.currentWeapon = new Bow(this.projectiles, this);
+        this.enemies.push(new Enemy(200, 200, this));
         requestAnimationFrame(this.frame.bind(this));
     }
     frame(newTime) {
@@ -27,8 +27,8 @@ class Game {
     update(elapsedTime) {
         this.player.update(elapsedTime);
         for (var i = 0; i < this.enemies.length; i++) {
-            if (this.enemies[i].alive) {
-                this.enemies[i].update(elapsedTime);
+            if (this.enemies.get(i).alive) {
+                this.enemies.get(i).update(elapsedTime);
             }
         }
         for (var i = 0; i < this.projectiles.length; i++) {
@@ -43,11 +43,11 @@ class Game {
     findClosestEnemy(source) {
         var dist, min = Number.POSITIVE_INFINITY, closest;
         for (var i = 0; i < this.enemies.length; i++) {
-            if (this.enemies[i].alive) {
-                dist = Geometry.getDistance(source, this.enemies[i].position);
+            if (this.enemies.get(i).alive) {
+                dist = Geometry.getDistance(source, this.enemies.get(i).position);
                 if (dist < min) {
                     min = dist;
-                    closest = this.enemies[i];
+                    closest = this.enemies.get(i);
                 }
             }
         }
@@ -66,8 +66,8 @@ class Game {
         context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.player.render(context);
         for (var i = 0; i < this.enemies.length; i++) {
-            if (this.enemies[i].alive) {
-                this.enemies[i].render(context);
+            if (this.enemies.get(i).alive) {
+                this.enemies.get(i).render(context);
             }
         }
         for (var i = 0; i < this.projectiles.length; i++) {
