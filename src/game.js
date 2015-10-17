@@ -10,10 +10,11 @@ class Game {
         this.enemies = new Pool();
         this.oldTime = null;
         this.score = 0;
+        this.wave = new Wave(this);
     }
     run() {
         this.player.currentWeapon = new Bow(this.projectiles, this);
-        this.enemies.push(new Enemy(200, 200, this));
+        this.nextWave();
         requestAnimationFrame(this.frame.bind(this));
     }
     frame(newTime) {
@@ -26,6 +27,7 @@ class Game {
     }
     update(elapsedTime) {
         this.player.update(elapsedTime);
+        this.wave.update(elapsedTime);
         for (var i = 0; i < this.enemies.length; i++) {
             if (this.enemies.get(i).alive) {
                 this.enemies.get(i).update(elapsedTime);
@@ -36,6 +38,17 @@ class Game {
                 this.projectiles.get(i).update(elapsedTime);
             }
         }
+    }
+    nextWave() {
+        this.wave.init();
+    }
+    spawnEnemy() {
+        var enemy = this.enemies.getFree();
+        if (!enemy) {
+            enemy = new Enemy(Math.random() * 640, Math.random() * 480, this);
+            this.enemies.push(enemy);
+        }
+        enemy.alive = true;
     }
     enemyKilled(enemy) {
         this.addScore(1);
