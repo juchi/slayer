@@ -465,6 +465,28 @@ var Input = (function () {
     return Input;
 })();
 
+var UI = (function () {
+    function UI(domElements) {
+        _classCallCheck(this, UI);
+
+        this.domElements = domElements;
+    }
+
+    _createClass(UI, [{
+        key: "refreshScore",
+        value: function refreshScore(score) {
+            this.domElements.score.textContent = score;
+        }
+    }, {
+        key: "refreshLife",
+        value: function refreshLife(life) {
+            this.domElements.life.textContent = life;
+        }
+    }]);
+
+    return UI;
+})();
+
 var Game = (function () {
     function Game(canvas, configPath, domElements) {
         _classCallCheck(this, Game);
@@ -473,7 +495,7 @@ var Game = (function () {
         this.canvas.width = 640;
         this.canvas.height = 480;
 
-        this.domElements = domElements;
+        this.ui = new UI(domElements);
 
         Loader.load(configPath, this.onLoadConfig.bind(this), function () {
             console.error('Error during configuration load', xhr);
@@ -503,8 +525,8 @@ var Game = (function () {
     }, {
         key: "run",
         value: function run() {
-            this.refreshScore();
-            this.refreshLife();
+            this.ui.refreshScore(this.score);
+            this.ui.refreshLife(this.player.life);
             this.player.currentWeapon = new Bow(this.projectiles, this);
             this.nextWave();
             requestAnimationFrame(this.frame.bind(this));
@@ -584,17 +606,7 @@ var Game = (function () {
         key: "addScore",
         value: function addScore(value) {
             this.score += value;
-            this.refreshScore();
-        }
-    }, {
-        key: "refreshScore",
-        value: function refreshScore() {
-            this.domElements.score.textContent = this.score;
-        }
-    }, {
-        key: "refreshLife",
-        value: function refreshLife() {
-            this.domElements.life.textContent = this.player.life;
+            this.ui.refreshScore(this.score);
         }
     }, {
         key: "render",

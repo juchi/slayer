@@ -4,7 +4,7 @@ class Game {
         this.canvas.width = 640;
         this.canvas.height = 480;
 
-        this.domElements = domElements;
+        this.ui = new UI(domElements);
 
         Loader.load(configPath, this.onLoadConfig.bind(this), function() {
             console.error('Error during configuration load', xhr);
@@ -27,8 +27,8 @@ class Game {
         this.run();
     }
     run() {
-        this.refreshScore();
-        this.refreshLife();
+        this.ui.refreshScore(this.score);
+        this.ui.refreshLife(this.player.life);
         this.player.currentWeapon = new Bow(this.projectiles, this);
         this.nextWave();
         requestAnimationFrame(this.frame.bind(this));
@@ -91,13 +91,7 @@ class Game {
     }
     addScore(value) {
         this.score += value;
-        this.refreshScore();
-    }
-    refreshScore() {
-        this.domElements.score.textContent = this.score;
-    }
-    refreshLife() {
-        this.domElements.life.textContent = this.player.life;
+        this.ui.refreshScore(this.score);
     }
     render() {
         var context = this.canvas.getContext('2d');
