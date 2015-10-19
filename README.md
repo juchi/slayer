@@ -3,6 +3,10 @@ Slayer game
 
 **Work In Progress**
 
+## Demo
+
+Game running on a [demo page](http://juchi.github.io/slayer/).
+
 ## Build from source
 
 In order to build the distributed file from source, you need to have npm installed
