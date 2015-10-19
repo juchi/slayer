@@ -45,9 +45,11 @@ class Game {
     spawnEnemy() {
         var enemy = this.enemies.getFree();
         if (!enemy) {
-            enemy = new Enemy(Math.random() * 640, Math.random() * 480, this);
+            enemy = new Enemy(0, 0, this);
             this.enemies.push(enemy);
         }
+        enemy.position.x = Math.random() * 640;
+        enemy.position.y = Math.random() * 480;
         enemy.alive = true;
     }
     enemyKilled(enemy) {
