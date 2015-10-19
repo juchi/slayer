@@ -54,7 +54,7 @@ class Game {
         }
         enemy.position.x = Math.random() * 640;
         enemy.position.y = Math.random() * 480;
-        enemy.alive = true;
+        enemy.respawn();
     }
     enemyKilled(enemy) {
         this.addScore(1);

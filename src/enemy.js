@@ -6,6 +6,19 @@ class Enemy extends Movable {
         this.game = game;
         this.alive = true;
         this.baseSpeed = 100;
+        this.maxLife = 10;
+        this.respawn();
+    }
+    respawn() {
+        this.alive = true;
+        this.life = this.maxLife;
+    }
+    takeDamage(value) {
+        this.life -= value;
+        if (this.life <= 0) {
+            this.life = 0;
+            this.die();
+        }
     }
     die() {
         this.alive = false;

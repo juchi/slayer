@@ -206,6 +206,7 @@ var Projectile = (function (_Movable) {
         this.alive = true;
         this.w = 4;
         this.h = 4;
+        this.damages = 0;
     }
 
     _createClass(Projectile, [{
@@ -235,6 +236,7 @@ var Arrow = (function (_Projectile) {
 
         _get(Object.getPrototypeOf(Arrow.prototype), 'constructor', this).call(this, game);
         this.baseSpeed = 400;
+        this.damages = 10;
     }
 
     _createClass(Arrow, [{
@@ -244,7 +246,7 @@ var Arrow = (function (_Projectile) {
             var enemy;
             if (enemy = this.game.findClosestEnemy(this.position)) {
                 if (this.game.isColliding(this, enemy)) {
-                    enemy.die();
+                    enemy.takeDamage(this.damages);
                     this.alive = false;
                 }
             }
@@ -266,9 +268,26 @@ var Enemy = (function (_Movable2) {
         this.game = game;
         this.alive = true;
         this.baseSpeed = 100;
+        this.maxLife = 10;
+        this.respawn();
     }
 
     _createClass(Enemy, [{
+        key: 'respawn',
+        value: function respawn() {
+            this.alive = true;
+            this.life = this.maxLife;
+        }
+    }, {
+        key: 'takeDamage',
+        value: function takeDamage(value) {
+            this.life -= value;
+            if (this.life <= 0) {
+                this.life = 0;
+                this.die();
+            }
+        }
+    }, {
         key: 'die',
         value: function die() {
             this.alive = false;
@@ -514,7 +533,7 @@ var Game = (function () {
             }
             enemy.position.x = Math.random() * 640;
             enemy.position.y = Math.random() * 480;
-            enemy.alive = true;
+            enemy.respawn();
         }
     }, {
         key: 'enemyKilled',

@@ -5,6 +5,7 @@ class Projectile extends Movable {
         this.alive = true;
         this.w = 4;
         this.h = 4;
+        this.damages = 0;
     }
     onDestination() {
         this.alive = false;
