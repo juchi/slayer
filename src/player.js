@@ -17,34 +17,8 @@ class Player extends Movable {
         context.fillStyle = '#000000';
         context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
     }
-    onKeyDown(keyCode) {
-        if (keyCode == 37) {
-            this.speed.x -= this.baseSpeed;
-        }
-        if (keyCode == 38) {
-            this.speed.y -= this.baseSpeed;
-        }
-        if (keyCode == 39) {
-            this.speed.x += this.baseSpeed;
-        }
-        if (keyCode == 40) {
-            this.speed.y += this.baseSpeed;
-        }
-    }
-    onKeyUp(keyCode) {
-        if (keyCode == 37) {
-            this.speed.x += this.baseSpeed;
-        }
-        if (keyCode == 38) {
-            this.speed.y += this.baseSpeed;
-        }
-        if (keyCode == 39) {
-            this.speed.x -= this.baseSpeed;
-        }
-        if (keyCode == 40) {
-            this.speed.y -= this.baseSpeed;
-        }
-    }
+    onKeyDown(keyCode) {}
+    onKeyUp(keyCode) {}
     onClick(e) {
         if (e.button == 0) { // left click
             this.destination = {x: e.offsetX, y: e.offsetY};
