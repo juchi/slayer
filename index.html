@@ -18,8 +18,7 @@
 
     <script type="text/javascript" src="dist/slayer.js"></script>
     <script type="text/javascript">
-    var g = new Game(document.getElementById('canvas'), {life: document.getElementById('life'), score: document.getElementById('score')});
-    g.run();
+    var g = new Game(document.getElementById('canvas'), 'data/game.json', {life: document.getElementById('life'), score: document.getElementById('score')});
     </script>
 </body>
 </html>

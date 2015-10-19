@@ -1,10 +1,10 @@
 class Player extends Movable {
-    constructor(x, y, input) {
-        super(x, y);
+    constructor(config, input) {
+        super(config.position.x, config.position.y);
         this.w = 20;
         this.h = 20;
-        this.baseSpeed = 100;
-        this.life = 100;
+        this.baseSpeed = config.speed;
+        this.life = config.life;
         this.init(input);
         this.currentWeapon = null;
     }

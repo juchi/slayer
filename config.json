@@ -1,5 +1,6 @@
 {
     "files": [
+        "src/loader.js",
         "src/pool.js",
         "src/geometry.js",
         "src/weapon.js",

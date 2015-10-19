@@ -1,18 +1,30 @@
 class Game {
-    constructor(canvas, domElements) {
+    constructor(canvas, configPath, domElements) {
         this.canvas = canvas;
         this.canvas.width = 640;
         this.canvas.height = 480;
 
+        this.domElements = domElements;
+
+        Loader.load(configPath, this.onLoadConfig.bind(this), function() {
+            console.error('Error during configuration load', xhr);
+        });
+    }
+    onLoadConfig(xhr) {
+        var config = JSON.parse(xhr.responseText);
+        this.config = config;
+        this.init();
+    }
+    init() {
         this.input = new Input(canvas);
         this.projectiles = new Pool();
-        this.player = new Player(0, 0, this.input);
+        this.player = new Player(this.config.player, this.input);
         this.enemies = new Pool();
         this.oldTime = null;
         this.score = 0;
         this.wave = new Wave(this);
 
-        this.domElements = domElements;
+        this.run();
     }
     run() {
         this.refreshScore();

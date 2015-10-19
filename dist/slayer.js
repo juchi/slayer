@@ -1,12 +1,39 @@
-'use strict';
+"use strict";
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Loader = (function () {
+    function Loader() {
+        _classCallCheck(this, Loader);
+    }
+
+    _createClass(Loader, null, [{
+        key: "load",
+        value: function load(url, success, error) {
+            var xhr = new XMLHttpRequest();
+            xhr.overrideMimeType("application/json");
+            xhr.open('GET', url, true); // Replace 'my_data' with the path to your file
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == "200") {
+                        success && success(xhr);
+                    } else {
+                        error && error(xhr);
+                    }
+                }
+            };
+            xhr.send(null);
+        }
+    }]);
+
+    return Loader;
+})();
 
 var Pool = (function () {
     function Pool() {
@@ -17,12 +44,12 @@ var Pool = (function () {
     }
 
     _createClass(Pool, [{
-        key: 'get',
+        key: "get",
         value: function get(index) {
             return this.objects[index];
         }
     }, {
-        key: 'getFree',
+        key: "getFree",
         value: function getFree() {
             for (var i = 0; i < this.objects.length; i++) {
                 if (!this.objects[i].alive) {
@@ -31,13 +58,13 @@ var Pool = (function () {
             }
         }
     }, {
-        key: 'push',
+        key: "push",
         value: function push(obj) {
             this.objects.push(obj);
             this.length = this.objects.length;
         }
     }, {
-        key: 'clear',
+        key: "clear",
         value: function clear() {
             this.objects = [];
         }
@@ -52,7 +79,7 @@ var Geometry = (function () {
     }
 
     _createClass(Geometry, null, [{
-        key: 'getVector',
+        key: "getVector",
         value: function getVector(source, destination) {
             var x = destination.x - source.x;
             var y = destination.y - source.y;
@@ -60,7 +87,7 @@ var Geometry = (function () {
             return { x: x, y: y };
         }
     }, {
-        key: 'normalize',
+        key: "normalize",
         value: function normalize(vector) {
             var length = Geometry.getLength(vector);
             if (length == 0) {
@@ -70,7 +97,7 @@ var Geometry = (function () {
             return { x: vector.x / length, y: vector.y / length };
         }
     }, {
-        key: 'getDistance',
+        key: "getDistance",
         value: function getDistance(a, b) {
             var x = a.x - b.x;
             var y = a.y - b.y;
@@ -78,7 +105,7 @@ var Geometry = (function () {
             return Math.sqrt(x * x + y * y);
         }
     }, {
-        key: 'getLength',
+        key: "getLength",
         value: function getLength(vector) {
             return Geometry.getDistance({ x: 0, y: 0 }, vector);
         }
@@ -97,7 +124,7 @@ var Weapon = (function () {
     }
 
     _createClass(Weapon, [{
-        key: 'fire',
+        key: "fire",
         value: function fire() {}
     }]);
 
@@ -110,12 +137,12 @@ var Bow = (function (_Weapon) {
     function Bow(projectiles, game) {
         _classCallCheck(this, Bow);
 
-        _get(Object.getPrototypeOf(Bow.prototype), 'constructor', this).call(this, projectiles, game);
+        _get(Object.getPrototypeOf(Bow.prototype), "constructor", this).call(this, projectiles, game);
         this.damages = 10;
     }
 
     _createClass(Bow, [{
-        key: 'fire',
+        key: "fire",
         value: function fire(startPosition, targetPosition) {
             var arrow = this.projectiles.getFree();
             if (!arrow) {
@@ -143,13 +170,13 @@ var Movable = (function () {
     }
 
     _createClass(Movable, [{
-        key: 'setPosition',
+        key: "setPosition",
         value: function setPosition(position) {
             this.position.x = position.x;
             this.position.y = position.y;
         }
     }, {
-        key: 'setDestination',
+        key: "setDestination",
         value: function setDestination(destination) {
             if (!destination) {
                 this.destination = null;
@@ -162,7 +189,7 @@ var Movable = (function () {
             this.destination.y = destination.y;
         }
     }, {
-        key: 'update',
+        key: "update",
         value: function update(elapsedTime) {
             if (this.destination) {
                 var movement = Geometry.getVector(this.position, this.destination);
@@ -188,7 +215,7 @@ var Movable = (function () {
             }
         }
     }, {
-        key: 'onDestination',
+        key: "onDestination",
         value: function onDestination() {}
     }]);
 
@@ -201,7 +228,7 @@ var Projectile = (function (_Movable) {
     function Projectile(game) {
         _classCallCheck(this, Projectile);
 
-        _get(Object.getPrototypeOf(Projectile.prototype), 'constructor', this).call(this, 0, 0);
+        _get(Object.getPrototypeOf(Projectile.prototype), "constructor", this).call(this, 0, 0);
         this.game = game;
         this.alive = true;
         this.w = 4;
@@ -210,12 +237,12 @@ var Projectile = (function (_Movable) {
     }
 
     _createClass(Projectile, [{
-        key: 'onDestination',
+        key: "onDestination",
         value: function onDestination() {
             this.alive = false;
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render(context) {
             if (!this.alive) {
                 return;
@@ -234,15 +261,15 @@ var Arrow = (function (_Projectile) {
     function Arrow(game) {
         _classCallCheck(this, Arrow);
 
-        _get(Object.getPrototypeOf(Arrow.prototype), 'constructor', this).call(this, game);
+        _get(Object.getPrototypeOf(Arrow.prototype), "constructor", this).call(this, game);
         this.baseSpeed = 400;
         this.damages = 10;
     }
 
     _createClass(Arrow, [{
-        key: 'update',
+        key: "update",
         value: function update(timeElapsed) {
-            _get(Object.getPrototypeOf(Arrow.prototype), 'update', this).call(this, timeElapsed);
+            _get(Object.getPrototypeOf(Arrow.prototype), "update", this).call(this, timeElapsed);
             var enemy;
             if (enemy = this.game.findClosestEnemy(this.position)) {
                 if (this.game.isColliding(this, enemy)) {
@@ -262,7 +289,7 @@ var Enemy = (function (_Movable2) {
     function Enemy(x, y, game) {
         _classCallCheck(this, Enemy);
 
-        _get(Object.getPrototypeOf(Enemy.prototype), 'constructor', this).call(this, x, y);
+        _get(Object.getPrototypeOf(Enemy.prototype), "constructor", this).call(this, x, y);
         this.w = 20;
         this.h = 20;
         this.game = game;
@@ -273,13 +300,13 @@ var Enemy = (function (_Movable2) {
     }
 
     _createClass(Enemy, [{
-        key: 'respawn',
+        key: "respawn",
         value: function respawn() {
             this.alive = true;
             this.life = this.maxLife;
         }
     }, {
-        key: 'takeDamage',
+        key: "takeDamage",
         value: function takeDamage(value) {
             this.life -= value;
             if (this.life <= 0) {
@@ -288,13 +315,13 @@ var Enemy = (function (_Movable2) {
             }
         }
     }, {
-        key: 'die',
+        key: "die",
         value: function die() {
             this.alive = false;
             this.game.enemyKilled(this);
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render(context) {
             context.fillStyle = '#FF0000';
             context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
@@ -314,12 +341,12 @@ var Wave = (function () {
     }
 
     _createClass(Wave, [{
-        key: 'init',
+        key: "init",
         value: function init() {
             this.lastSpawn = 0;
         }
     }, {
-        key: 'update',
+        key: "update",
         value: function update(timeElapsed) {
             this.lastSpawn += timeElapsed;
             if (this.lastSpawn > this.spawnPeriod) {
@@ -335,65 +362,39 @@ var Wave = (function () {
 var Player = (function (_Movable3) {
     _inherits(Player, _Movable3);
 
-    function Player(x, y, input) {
+    function Player(config, input) {
         _classCallCheck(this, Player);
 
-        _get(Object.getPrototypeOf(Player.prototype), 'constructor', this).call(this, x, y);
+        _get(Object.getPrototypeOf(Player.prototype), "constructor", this).call(this, config.position.x, config.position.y);
         this.w = 20;
         this.h = 20;
-        this.baseSpeed = 100;
-        this.life = 100;
+        this.baseSpeed = config.speed;
+        this.life = config.life;
         this.init(input);
         this.currentWeapon = null;
     }
 
     _createClass(Player, [{
-        key: 'init',
+        key: "init",
         value: function init(input) {
             input.downevents.push(this.onKeyDown.bind(this));
             input.upevents.push(this.onKeyUp.bind(this));
             input.clickevents.push(this.onClick.bind(this));
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render(context) {
             context.fillStyle = '#000000';
             context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
         }
     }, {
-        key: 'onKeyDown',
-        value: function onKeyDown(keyCode) {
-            if (keyCode == 37) {
-                this.speed.x -= this.baseSpeed;
-            }
-            if (keyCode == 38) {
-                this.speed.y -= this.baseSpeed;
-            }
-            if (keyCode == 39) {
-                this.speed.x += this.baseSpeed;
-            }
-            if (keyCode == 40) {
-                this.speed.y += this.baseSpeed;
-            }
-        }
+        key: "onKeyDown",
+        value: function onKeyDown(keyCode) {}
     }, {
-        key: 'onKeyUp',
-        value: function onKeyUp(keyCode) {
-            if (keyCode == 37) {
-                this.speed.x += this.baseSpeed;
-            }
-            if (keyCode == 38) {
-                this.speed.y += this.baseSpeed;
-            }
-            if (keyCode == 39) {
-                this.speed.x -= this.baseSpeed;
-            }
-            if (keyCode == 40) {
-                this.speed.y -= this.baseSpeed;
-            }
-        }
+        key: "onKeyUp",
+        value: function onKeyUp(keyCode) {}
     }, {
-        key: 'onClick',
+        key: "onClick",
         value: function onClick(e) {
             if (e.button == 0) {
                 // left click
@@ -404,7 +405,7 @@ var Player = (function (_Movable3) {
             }
         }
     }, {
-        key: 'attack',
+        key: "attack",
         value: function attack(targetPosition) {
             this.currentWeapon.fire(this.position, targetPosition);
         }
@@ -425,7 +426,7 @@ var Input = (function () {
     }
 
     _createClass(Input, [{
-        key: 'init',
+        key: "init",
         value: function init(canvas) {
             window.addEventListener('keydown', this.onKeyDown.bind(this));
             window.addEventListener('keyup', this.onKeyUp.bind(this));
@@ -435,7 +436,7 @@ var Input = (function () {
             });
         }
     }, {
-        key: 'onKeyDown',
+        key: "onKeyDown",
         value: function onKeyDown(e) {
             if (this.downkeys[e.keyCode]) return;
             this.downkeys[e.keyCode] = 1;
@@ -444,7 +445,7 @@ var Input = (function () {
             }
         }
     }, {
-        key: 'onKeyUp',
+        key: "onKeyUp",
         value: function onKeyUp(e) {
             if (!this.downkeys[e.keyCode]) return;
             delete this.downkeys[e.keyCode];
@@ -453,7 +454,7 @@ var Input = (function () {
             }
         }
     }, {
-        key: 'onMouseDown',
+        key: "onMouseDown",
         value: function onMouseDown(e) {
             for (var i in this.clickevents) {
                 this.clickevents[i](e);
@@ -465,26 +466,42 @@ var Input = (function () {
 })();
 
 var Game = (function () {
-    function Game(canvas, domElements) {
+    function Game(canvas, configPath, domElements) {
         _classCallCheck(this, Game);
 
         this.canvas = canvas;
         this.canvas.width = 640;
         this.canvas.height = 480;
 
-        this.input = new Input(canvas);
-        this.projectiles = new Pool();
-        this.player = new Player(0, 0, this.input);
-        this.enemies = new Pool();
-        this.oldTime = null;
-        this.score = 0;
-        this.wave = new Wave(this);
-
         this.domElements = domElements;
+
+        Loader.load(configPath, this.onLoadConfig.bind(this), function () {
+            console.error('Error during configuration load', xhr);
+        });
     }
 
     _createClass(Game, [{
-        key: 'run',
+        key: "onLoadConfig",
+        value: function onLoadConfig(xhr) {
+            var config = JSON.parse(xhr.responseText);
+            this.config = config;
+            this.init();
+        }
+    }, {
+        key: "init",
+        value: function init() {
+            this.input = new Input(canvas);
+            this.projectiles = new Pool();
+            this.player = new Player(this.config.player, this.input);
+            this.enemies = new Pool();
+            this.oldTime = null;
+            this.score = 0;
+            this.wave = new Wave(this);
+
+            this.run();
+        }
+    }, {
+        key: "run",
         value: function run() {
             this.refreshScore();
             this.refreshLife();
@@ -493,7 +510,7 @@ var Game = (function () {
             requestAnimationFrame(this.frame.bind(this));
         }
     }, {
-        key: 'frame',
+        key: "frame",
         value: function frame(newTime) {
             if (!this.oldTime) this.oldTime = newTime;
             var elapsedTime = (newTime - this.oldTime) / 1000;
@@ -503,7 +520,7 @@ var Game = (function () {
             requestAnimationFrame(this.frame.bind(this));
         }
     }, {
-        key: 'update',
+        key: "update",
         value: function update(elapsedTime) {
             this.player.update(elapsedTime);
             this.wave.update(elapsedTime);
@@ -519,12 +536,12 @@ var Game = (function () {
             }
         }
     }, {
-        key: 'nextWave',
+        key: "nextWave",
         value: function nextWave() {
             this.wave.init();
         }
     }, {
-        key: 'spawnEnemy',
+        key: "spawnEnemy",
         value: function spawnEnemy() {
             var enemy = this.enemies.getFree();
             if (!enemy) {
@@ -536,12 +553,12 @@ var Game = (function () {
             enemy.respawn();
         }
     }, {
-        key: 'enemyKilled',
+        key: "enemyKilled",
         value: function enemyKilled(enemy) {
             this.addScore(1);
         }
     }, {
-        key: 'findClosestEnemy',
+        key: "findClosestEnemy",
         value: function findClosestEnemy(source) {
             var dist,
                 min = Number.POSITIVE_INFINITY,
@@ -559,28 +576,28 @@ var Game = (function () {
             return closest;
         }
     }, {
-        key: 'isColliding',
+        key: "isColliding",
         value: function isColliding(source, target) {
             return source.position.x + source.w > target.position.x && source.position.x < target.position.x + target.w && source.position.y + source.h > target.position.y && source.position.y < target.position.y + target.h;
         }
     }, {
-        key: 'addScore',
+        key: "addScore",
         value: function addScore(value) {
             this.score += value;
             this.refreshScore();
         }
     }, {
-        key: 'refreshScore',
+        key: "refreshScore",
         value: function refreshScore() {
             this.domElements.score.textContent = this.score;
         }
     }, {
-        key: 'refreshLife',
+        key: "refreshLife",
         value: function refreshLife() {
             this.domElements.life.textContent = this.player.life;
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             var context = this.canvas.getContext('2d');
             context.clearRect(0, 0, this.canvas.width, this.canvas.height);
