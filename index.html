@@ -6,15 +6,19 @@
     <style>
     canvas {
         border: 1px solid #AAA;
+        float: left;
+        margin: 0 20px;
     }
     </style>
 </head>
 <body>
-<canvas id="canvas"></canvas>
+    <canvas id="canvas"></canvas>
+    <p>Life : <span id="life"></span></p>
+    <p>Score : <span id="score"></span></p>
 
     <script type="text/javascript" src="dist/slayer.js"></script>
     <script type="text/javascript">
-    var g = new Game(document.getElementById('canvas'));
+    var g = new Game(document.getElementById('canvas'), {life: document.getElementById('life'), score: document.getElementById('score')});
     g.run();
     </script>
 </body>

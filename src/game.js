@@ -1,5 +1,5 @@
 class Game {
-    constructor(canvas) {
+    constructor(canvas, domElements) {
         this.canvas = canvas;
         this.canvas.width = 640;
         this.canvas.height = 480;
@@ -11,8 +11,12 @@ class Game {
         this.oldTime = null;
         this.score = 0;
         this.wave = new Wave(this);
+
+        this.domElements = domElements;
     }
     run() {
+        this.refreshScore();
+        this.refreshLife();
         this.player.currentWeapon = new Bow(this.projectiles, this);
         this.nextWave();
         requestAnimationFrame(this.frame.bind(this));
@@ -75,6 +79,13 @@ class Game {
     }
     addScore(value) {
         this.score += value;
+        this.refreshScore();
+    }
+    refreshScore() {
+        this.domElements.score.textContent = this.score;
+    }
+    refreshLife() {
+        this.domElements.life.textContent = this.player.life;
     }
     render() {
         var context = this.canvas.getContext('2d');

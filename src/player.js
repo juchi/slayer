@@ -4,6 +4,7 @@ class Player extends Movable {
         this.w = 20;
         this.h = 20;
         this.baseSpeed = 100;
+        this.life = 100;
         this.init(input);
         this.currentWeapon = null;
     }
