@@ -297,6 +297,9 @@ var Enemy = (function (_Movable2) {
         this.baseSpeed = 100;
         this.maxLife = 10;
         this.respawn();
+        this.range = 60;
+        this.damages = 5;
+        this.cooldown = 0;
     }
 
     _createClass(Enemy, [{
@@ -319,6 +322,30 @@ var Enemy = (function (_Movable2) {
         value: function die() {
             this.alive = false;
             this.game.enemyKilled(this);
+        }
+    }, {
+        key: "update",
+        value: function update(elapsedTime) {
+            this.cooldown -= elapsedTime;
+            if (this.cooldown < 0) {
+                this.cooldown = 0;
+            }
+            var target = this.game.findClosestPlayerObject(this.position);
+            if (!target) {
+                return;
+            }
+            this.destination = { x: target.position.x, y: target.position.y };
+            _get(Object.getPrototypeOf(Enemy.prototype), "update", this).call(this, elapsedTime);
+
+            if (this.cooldown <= 0 && Geometry.getDistance(this.position, target.position) <= this.range) {
+                this.attack(target);
+            }
+        }
+    }, {
+        key: "attack",
+        value: function attack(target) {
+            this.cooldown += 2;
+            target.takeDamage(this.damages);
         }
     }, {
         key: "render",
@@ -357,6 +384,44 @@ var Wave = (function () {
     }]);
 
     return Wave;
+})();
+
+var Castle = (function () {
+    function Castle(config) {
+        _classCallCheck(this, Castle);
+
+        this.position = {
+            x: config.position.x,
+            y: config.position.y
+        };
+        this.w = 50;
+        this.h = 50;
+        this.life = config.life;
+    }
+
+    _createClass(Castle, [{
+        key: "render",
+        value: function render(context) {
+            context.fillStyle = '#00FF00';
+            context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
+        }
+    }, {
+        key: "takeDamage",
+        value: function takeDamage(value) {
+            this.life -= value;
+            if (this.life <= 0) {
+                this.life = 0;
+                this.die();
+            }
+        }
+    }, {
+        key: "die",
+        value: function die() {
+            alert('castle destroyed');
+        }
+    }]);
+
+    return Castle;
 })();
 
 var Player = (function (_Movable3) {
@@ -408,6 +473,20 @@ var Player = (function (_Movable3) {
         key: "attack",
         value: function attack(targetPosition) {
             this.currentWeapon.fire(this.position, targetPosition);
+        }
+    }, {
+        key: "takeDamage",
+        value: function takeDamage(value) {
+            this.life -= value;
+            if (this.life <= 0) {
+                this.life = 0;
+                this.die();
+            }
+        }
+    }, {
+        key: "die",
+        value: function die() {
+            alert('you are dead');
         }
     }]);
 
@@ -515,6 +594,7 @@ var Game = (function () {
             this.input = new Input(canvas);
             this.projectiles = new Pool();
             this.player = new Player(this.config.player, this.input);
+            this.castle = new Castle(this.config.castle);
             this.enemies = new Pool();
             this.oldTime = null;
             this.score = 0;
@@ -556,6 +636,7 @@ var Game = (function () {
                     this.projectiles.get(i).update(elapsedTime);
                 }
             }
+            this.ui.refreshLife(this.player.life);
         }
     }, {
         key: "nextWave",
@@ -598,6 +679,18 @@ var Game = (function () {
             return closest;
         }
     }, {
+        key: "findClosestPlayerObject",
+        value: function findClosestPlayerObject(position) {
+            var playerDist = Geometry.getDistance(position, this.player.position);
+            var castleDist = Geometry.getDistance(position, this.castle.position);
+
+            if (playerDist < castleDist) {
+                return this.player;
+            } else {
+                return this.castle;
+            }
+        }
+    }, {
         key: "isColliding",
         value: function isColliding(source, target) {
             return source.position.x + source.w > target.position.x && source.position.x < target.position.x + target.w && source.position.y + source.h > target.position.y && source.position.y < target.position.y + target.h;
@@ -614,6 +707,7 @@ var Game = (function () {
             var context = this.canvas.getContext('2d');
             context.clearRect(0, 0, this.canvas.width, this.canvas.height);
             this.player.render(context);
+            this.castle.render(context);
             for (var i = 0; i < this.enemies.length; i++) {
                 if (this.enemies.get(i).alive) {
                     this.enemies.get(i).render(context);

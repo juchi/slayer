@@ -19,6 +19,7 @@ class Game {
         this.input = new Input(canvas);
         this.projectiles = new Pool();
         this.player = new Player(this.config.player, this.input);
+        this.castle = new Castle(this.config.castle);
         this.enemies = new Pool();
         this.oldTime = null;
         this.score = 0;
@@ -54,6 +55,7 @@ class Game {
                 this.projectiles.get(i).update(elapsedTime);
             }
         }
+        this.ui.refreshLife(this.player.life);
     }
     nextWave() {
         this.wave.init();
@@ -85,6 +87,16 @@ class Game {
 
         return closest;
     }
+    findClosestPlayerObject(position) {
+        var playerDist = Geometry.getDistance(position, this.player.position);
+        var castleDist = Geometry.getDistance(position, this.castle.position);
+
+        if (playerDist < castleDist) {
+            return this.player;
+        } else {
+            return this.castle;
+        }
+    }
     isColliding(source, target) {
         return source.position.x + source.w > target.position.x && source.position.x < target.position.x + target.w
             && source.position.y + source.h > target.position.y && source.position.y < target.position.y + target.h;
@@ -97,6 +109,7 @@ class Game {
         var context = this.canvas.getContext('2d');
         context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.player.render(context);
+        this.castle.render(context);
         for (var i = 0; i < this.enemies.length; i++) {
             if (this.enemies.get(i).alive) {
                 this.enemies.get(i).render(context);

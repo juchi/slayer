@@ -29,4 +29,14 @@ class Player extends Movable {
     attack(targetPosition) {
         this.currentWeapon.fire(this.position, targetPosition);
     }
+    takeDamage(value) {
+        this.life -= value;
+        if (this.life <= 0) {
+            this.life = 0;
+            this.die();
+        }
+    }
+    die() {
+        alert('you are dead');
+    }
 }
