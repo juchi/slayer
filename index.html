@@ -15,10 +15,15 @@
     <canvas id="canvas"></canvas>
     <p>Life : <span id="life"></span></p>
     <p>Score : <span id="score"></span></p>
+    <p id="gameinfo"></p>
 
     <script type="text/javascript" src="dist/slayer.js"></script>
     <script type="text/javascript">
-    var g = new Game(document.getElementById('canvas'), 'data/game.json', {life: document.getElementById('life'), score: document.getElementById('score')});
+    var g = new Game(document.getElementById('canvas'), 'data/game.json', {
+        game: document.getElementById('gameinfo'),
+        life: document.getElementById('life'),
+        score: document.getElementById('score')
+    });
     </script>
 </body>
 </html>

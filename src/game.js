@@ -5,6 +5,7 @@ class Game {
         this.canvas.height = 480;
 
         this.ui = new UI(domElements);
+        this.running = false;
 
         Loader.load(configPath, this.onLoadConfig.bind(this), function() {
             console.error('Error during configuration load', xhr);
@@ -28,13 +29,18 @@ class Game {
         this.run();
     }
     run() {
+        this.running = true;
         this.ui.refreshScore(this.score);
         this.ui.refreshLife(this.player.life);
+        this.ui.refreshGameStatus(false);
         this.player.currentWeapon = new Bow(this.projectiles, this);
         this.nextWave();
         requestAnimationFrame(this.frame.bind(this));
     }
     frame(newTime) {
+        if (!this.running) {
+            return;
+        }
         if (!this.oldTime) this.oldTime = newTime;
         var elapsedTime = (newTime - this.oldTime) / 1000;
         this.oldTime = newTime;
@@ -56,6 +62,9 @@ class Game {
             }
         }
         this.ui.refreshLife(this.player.life);
+        if (this.player.life === 0 || this.castle.life === 0) {
+            this.gameover();
+        }
     }
     nextWave() {
         this.wave.init();
@@ -104,6 +113,10 @@ class Game {
     addScore(value) {
         this.score += value;
         this.ui.refreshScore(this.score);
+    }
+    gameover() {
+        this.running = false;
+        this.ui.refreshGameStatus(true);
     }
     render() {
         var context = this.canvas.getContext('2d');

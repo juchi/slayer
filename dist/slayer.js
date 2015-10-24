@@ -574,6 +574,11 @@ var UI = (function () {
         value: function refreshLife(life) {
             this.domElements.life.textContent = life;
         }
+    }, {
+        key: "refreshGameStatus",
+        value: function refreshGameStatus(gameover) {
+            this.domElements.game.textContent = gameover ? 'Game Over' : '';
+        }
     }]);
 
     return UI;
@@ -588,6 +593,7 @@ var Game = (function () {
         this.canvas.height = 480;
 
         this.ui = new UI(domElements);
+        this.running = false;
 
         Loader.load(configPath, this.onLoadConfig.bind(this), function () {
             console.error('Error during configuration load', xhr);
@@ -618,8 +624,10 @@ var Game = (function () {
     }, {
         key: "run",
         value: function run() {
+            this.running = true;
             this.ui.refreshScore(this.score);
             this.ui.refreshLife(this.player.life);
+            this.ui.refreshGameStatus(false);
             this.player.currentWeapon = new Bow(this.projectiles, this);
             this.nextWave();
             requestAnimationFrame(this.frame.bind(this));
@@ -627,6 +635,9 @@ var Game = (function () {
     }, {
         key: "frame",
         value: function frame(newTime) {
+            if (!this.running) {
+                return;
+            }
             if (!this.oldTime) this.oldTime = newTime;
             var elapsedTime = (newTime - this.oldTime) / 1000;
             this.oldTime = newTime;
@@ -650,6 +661,9 @@ var Game = (function () {
                 }
             }
             this.ui.refreshLife(this.player.life);
+            if (this.player.life === 0 || this.castle.life === 0) {
+                this.gameover();
+            }
         }
     }, {
         key: "nextWave",
@@ -713,6 +727,12 @@ var Game = (function () {
         value: function addScore(value) {
             this.score += value;
             this.ui.refreshScore(this.score);
+        }
+    }, {
+        key: "gameover",
+        value: function gameover() {
+            this.running = false;
+            this.ui.refreshGameStatus(true);
         }
     }, {
         key: "render",

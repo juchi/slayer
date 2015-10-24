@@ -8,4 +8,7 @@ class UI {
     refreshLife(life) {
         this.domElements.life.textContent = life;
     }
+    refreshGameStatus(gameover) {
+        this.domElements.game.textContent = gameover ? 'Game Over' : '';
+    }
 }
