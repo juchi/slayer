@@ -28,16 +28,17 @@ class Movable extends Drawable {
             }
             this.speed.x *= coef;
             this.speed.y *= coef;
-        }
-        this.position.x += this.speed.x * elapsedTime;
-        this.position.y += this.speed.y * elapsedTime;
 
-        if (this.destination && Geometry.getDistance(this.position, this.destination) < 1) {
-            this.position.x = this.destination.x;
-            this.position.y = this.destination.y;
-            this.destination = null;
-            this.speed = {x: 0,  y: 0};
-            this.onDestination();
+            this.position.x += this.speed.x * elapsedTime;
+            this.position.y += this.speed.y * elapsedTime;
+
+            if (Geometry.getDistance(this.position, this.destination) < 1) {
+                this.position.x = this.destination.x;
+                this.position.y = this.destination.y;
+                this.destination = null;
+                this.speed = {x: 0,  y: 0};
+                this.onDestination();
+            }
         }
     }
     onDestination() {

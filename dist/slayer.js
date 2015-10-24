@@ -224,16 +224,17 @@ var Movable = (function (_Drawable) {
                 }
                 this.speed.x *= coef;
                 this.speed.y *= coef;
-            }
-            this.position.x += this.speed.x * elapsedTime;
-            this.position.y += this.speed.y * elapsedTime;
 
-            if (this.destination && Geometry.getDistance(this.position, this.destination) < 1) {
-                this.position.x = this.destination.x;
-                this.position.y = this.destination.y;
-                this.destination = null;
-                this.speed = { x: 0, y: 0 };
-                this.onDestination();
+                this.position.x += this.speed.x * elapsedTime;
+                this.position.y += this.speed.y * elapsedTime;
+
+                if (Geometry.getDistance(this.position, this.destination) < 1) {
+                    this.position.x = this.destination.x;
+                    this.position.y = this.destination.y;
+                    this.destination = null;
+                    this.speed = { x: 0, y: 0 };
+                    this.onDestination();
+                }
             }
         }
     }, {
@@ -352,12 +353,16 @@ var Enemy = (function (_Movable2) {
             if (!target) {
                 return;
             }
-            this.destination = { x: target.position.x, y: target.position.y };
-            _get(Object.getPrototypeOf(Enemy.prototype), "update", this).call(this, elapsedTime);
 
-            if (this.cooldown <= 0 && Geometry.getDistance(this.position, target.position) <= this.range) {
-                this.attack(target);
+            if (Geometry.getDistance(this.position, target.position) <= this.range) {
+                if (this.cooldown <= 0) {
+                    this.attack(target);
+                }
+                this.destination = null;
+            } else {
+                this.destination = { x: target.position.x, y: target.position.y };
             }
+            _get(Object.getPrototypeOf(Enemy.prototype), "update", this).call(this, elapsedTime);
         }
     }, {
         key: "attack",

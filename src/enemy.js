@@ -34,12 +34,16 @@ class Enemy extends Movable {
         if (!target) {
             return;
         }
-        this.destination = {x: target.position.x, y: target.position.y};
-        super.update(elapsedTime);
 
-        if (this.cooldown <= 0 && Geometry.getDistance(this.position, target.position) <= this.range) {
-            this.attack(target);
+        if (Geometry.getDistance(this.position, target.position) <= this.range) {
+            if (this.cooldown <= 0) {
+                this.attack(target);
+            }
+            this.destination = null;
+        } else {
+            this.destination = {x: target.position.x, y: target.position.y};
         }
+        super.update(elapsedTime);
     }
     attack(target) {
         this.cooldown += 2;
