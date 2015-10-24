@@ -1,8 +1,6 @@
 class Player extends Movable {
     constructor(config, input) {
-        super(config.position.x, config.position.y);
-        this.w = 20;
-        this.h = 20;
+        super(config.position.x, config.position.y, 20, 20);
         this.baseSpeed = config.speed;
         this.life = config.life;
         this.init(input);
@@ -15,7 +13,7 @@ class Player extends Movable {
     }
     render(context) {
         context.fillStyle = '#000000';
-        context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
+        context.fillRect(... this.getRenderGeometry());
     }
     onKeyDown(keyCode) {}
     onKeyUp(keyCode) {}

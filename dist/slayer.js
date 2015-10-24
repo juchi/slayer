@@ -4,6 +4,8 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -158,24 +160,44 @@ var Bow = (function (_Weapon) {
     return Bow;
 })(Weapon);
 
-var Movable = (function () {
-    function Movable(x, y) {
-        _classCallCheck(this, Movable);
+var Drawable = (function () {
+    function Drawable(x, y, w, h) {
+        _classCallCheck(this, Drawable);
 
         this.position = { x: x, y: y };
-
-        this.baseSpeed = 0;
-        this.speed = { x: 0, y: 0 };
-        this.destination = null;
+        this.w = w;
+        this.h = h;
     }
 
-    _createClass(Movable, [{
+    _createClass(Drawable, [{
         key: "setPosition",
         value: function setPosition(position) {
             this.position.x = position.x;
             this.position.y = position.y;
         }
     }, {
+        key: "getRenderGeometry",
+        value: function getRenderGeometry() {
+            return [this.position.x - this.w / 2 | 0, this.position.y - this.h / 2 | 0, this.w, this.h];
+        }
+    }]);
+
+    return Drawable;
+})();
+
+var Movable = (function (_Drawable) {
+    _inherits(Movable, _Drawable);
+
+    function Movable(x, y, w, h) {
+        _classCallCheck(this, Movable);
+
+        _get(Object.getPrototypeOf(Movable.prototype), "constructor", this).call(this, x, y, w, h);
+        this.baseSpeed = 0;
+        this.speed = { x: 0, y: 0 };
+        this.destination = null;
+    }
+
+    _createClass(Movable, [{
         key: "setDestination",
         value: function setDestination(destination) {
             if (!destination) {
@@ -220,7 +242,7 @@ var Movable = (function () {
     }]);
 
     return Movable;
-})();
+})(Drawable);
 
 var Projectile = (function (_Movable) {
     _inherits(Projectile, _Movable);
@@ -228,11 +250,9 @@ var Projectile = (function (_Movable) {
     function Projectile(game) {
         _classCallCheck(this, Projectile);
 
-        _get(Object.getPrototypeOf(Projectile.prototype), "constructor", this).call(this, 0, 0);
+        _get(Object.getPrototypeOf(Projectile.prototype), "constructor", this).call(this, 0, 0, 4, 4);
         this.game = game;
         this.alive = true;
-        this.w = 4;
-        this.h = 4;
         this.damages = 0;
     }
 
@@ -248,7 +268,7 @@ var Projectile = (function (_Movable) {
                 return;
             }
             context.fillStyle = '#009900';
-            context.fillRect(this.position.x, this.position.y, this.w, this.h);
+            context.fillRect.apply(context, _toConsumableArray(this.getRenderGeometry()));
         }
     }]);
 
@@ -289,9 +309,7 @@ var Enemy = (function (_Movable2) {
     function Enemy(x, y, game) {
         _classCallCheck(this, Enemy);
 
-        _get(Object.getPrototypeOf(Enemy.prototype), "constructor", this).call(this, x, y);
-        this.w = 20;
-        this.h = 20;
+        _get(Object.getPrototypeOf(Enemy.prototype), "constructor", this).call(this, x, y, 20, 20);
         this.game = game;
         this.alive = true;
         this.baseSpeed = 100;
@@ -351,7 +369,7 @@ var Enemy = (function (_Movable2) {
         key: "render",
         value: function render(context) {
             context.fillStyle = '#FF0000';
-            context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
+            context.fillRect.apply(context, _toConsumableArray(this.getRenderGeometry()));
         }
     }]);
 
@@ -386,16 +404,13 @@ var Wave = (function () {
     return Wave;
 })();
 
-var Castle = (function () {
+var Castle = (function (_Drawable2) {
+    _inherits(Castle, _Drawable2);
+
     function Castle(config) {
         _classCallCheck(this, Castle);
 
-        this.position = {
-            x: config.position.x,
-            y: config.position.y
-        };
-        this.w = 50;
-        this.h = 50;
+        _get(Object.getPrototypeOf(Castle.prototype), "constructor", this).call(this, config.position.x, config.position.y, 50, 50);
         this.life = config.life;
     }
 
@@ -403,7 +418,7 @@ var Castle = (function () {
         key: "render",
         value: function render(context) {
             context.fillStyle = '#00FF00';
-            context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
+            context.fillRect.apply(context, _toConsumableArray(this.getRenderGeometry()));
         }
     }, {
         key: "takeDamage",
@@ -422,7 +437,7 @@ var Castle = (function () {
     }]);
 
     return Castle;
-})();
+})(Drawable);
 
 var Player = (function (_Movable3) {
     _inherits(Player, _Movable3);
@@ -430,9 +445,7 @@ var Player = (function (_Movable3) {
     function Player(config, input) {
         _classCallCheck(this, Player);
 
-        _get(Object.getPrototypeOf(Player.prototype), "constructor", this).call(this, config.position.x, config.position.y);
-        this.w = 20;
-        this.h = 20;
+        _get(Object.getPrototypeOf(Player.prototype), "constructor", this).call(this, config.position.x, config.position.y, 20, 20);
         this.baseSpeed = config.speed;
         this.life = config.life;
         this.init(input);
@@ -450,7 +463,7 @@ var Player = (function (_Movable3) {
         key: "render",
         value: function render(context) {
             context.fillStyle = '#000000';
-            context.fillRect(this.position.x | 0, this.position.y | 0, this.w, this.h);
+            context.fillRect.apply(context, _toConsumableArray(this.getRenderGeometry()));
         }
     }, {
         key: "onKeyDown",

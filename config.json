@@ -5,6 +5,7 @@
         "src/geometry.js",
         "src/weapon.js",
         "src/bow.js",
+        "src/drawable.js",
         "src/movable.js",
         "src/projectile.js",
         "src/arrow.js",

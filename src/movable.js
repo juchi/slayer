@@ -1,14 +1,9 @@
-class Movable {
-    constructor(x, y) {
-        this.position = {x: x, y: y};
-
+class Movable extends Drawable {
+    constructor(x, y, w, h) {
+        super(x, y, w, h);
         this.baseSpeed = 0;
         this.speed = {x: 0, y: 0};
         this.destination = null;
-    }
-    setPosition(position) {
-        this.position.x = position.x;
-        this.position.y = position.y;
     }
     setDestination(destination) {
         if (!destination) {

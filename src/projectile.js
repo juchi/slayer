@@ -1,10 +1,8 @@
 class Projectile extends Movable {
     constructor(game) {
-        super(0, 0);
+        super(0, 0, 4, 4);
         this.game = game;
         this.alive = true;
-        this.w = 4;
-        this.h = 4;
         this.damages = 0;
     }
     onDestination() {
@@ -15,6 +13,6 @@ class Projectile extends Movable {
             return;
         }
         context.fillStyle = '#009900';
-        context.fillRect(this.position.x, this.position.y, this.w, this.h);
+        context.fillRect(... this.getRenderGeometry());
     }
 }
